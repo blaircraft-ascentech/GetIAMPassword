@@ -142,14 +142,27 @@ class RdsTokenApp:
         self.load_button.grid(row=row, column=0, columnspan=2, sticky="ew", pady=(4, 8))
         row += 1
 
-        # 6. Database dropdown.
+        # 6. Database dropdown + copy-endpoint button.
         ttk.Label(frame, text="Database:").grid(row=row, column=0, sticky="w")
+        db_row = ttk.Frame(frame)
+        db_row.grid(row=row, column=1, sticky="ew", pady=2)
+        db_row.columnconfigure(0, weight=1)
         self.db_var = tk.StringVar()
         self.db_combo = ttk.Combobox(
-            frame, textvariable=self.db_var, state="readonly", values=[]
+            db_row, textvariable=self.db_var, state="readonly", values=[]
         )
-        self.db_combo.grid(row=row, column=1, sticky="ew", pady=2)
-        self.db_combo.bind("<<ComboboxSelected>>", lambda _e: self._sync_generate_state())
+        self.db_combo.grid(row=0, column=0, sticky="ew")
+        self.db_combo.bind(
+            "<<ComboboxSelected>>", lambda _e: self._sync_generate_state()
+        )
+        self.copy_endpoint_button = ttk.Button(
+            db_row,
+            text="Copy",
+            width=6,
+            command=self.on_copy_endpoint,
+            state="disabled",
+        )
+        self.copy_endpoint_button.grid(row=0, column=1, padx=(6, 0))
         row += 1
 
         # 7. Generate token button.
@@ -171,7 +184,7 @@ class RdsTokenApp:
         )
         row += 1
 
-        # Bottom button row: copy the last token / close the app.
+        # Bottom button row: copy the last token / clear the form / close.
         button_row = ttk.Frame(frame)
         button_row.grid(row=row, column=0, columnspan=2, sticky="ew", pady=(12, 0))
         button_row.columnconfigure(0, weight=1)
@@ -182,8 +195,11 @@ class RdsTokenApp:
             state="disabled",
         )
         self.copy_button.grid(row=0, column=0, sticky="w")
+        ttk.Button(button_row, text="Clear", command=self.on_clear_form).grid(
+            row=0, column=1, padx=(0, 6)
+        )
         ttk.Button(button_row, text="Close", command=self.root.destroy).grid(
-            row=0, column=1, sticky="e"
+            row=0, column=2, sticky="e"
         )
 
     # -- helpers ---------------------------------------------------------
@@ -195,10 +211,12 @@ class RdsTokenApp:
         self._sync_generate_state()
 
     def _sync_generate_state(self) -> None:
-        can_generate = (
-            not self._busy and bool(self.db_var.get()) and bool(self.databases)
-        )
+        has_selection = bool(self.db_var.get()) and bool(self.databases)
+        can_generate = not self._busy and has_selection
         self.generate_button.configure(
+            state="normal" if can_generate else "disabled"
+        )
+        self.copy_endpoint_button.configure(
             state="normal" if can_generate else "disabled"
         )
 
@@ -322,6 +340,29 @@ class RdsTokenApp:
             )
             return
         self._copy_token_to_clipboard(self.last_token)
+
+    def on_copy_endpoint(self) -> None:
+        label = self.db_var.get()
+        if label not in self.databases:
+            messagebox.showerror("No database", "Select a database first.")
+            return
+        address, _port = self.databases[label]
+        self.root.clipboard_clear()
+        self.root.clipboard_append(address)
+        self.status_var.set(f"Endpoint copied to clipboard: {address}")
+
+    def on_clear_form(self) -> None:
+        self.creds_text.delete("1.0", "end")
+        self.region_var.set(_DEFAULT_REGION)
+        self.username_var.set("")
+        self.clipboard_var.set(True)
+        self.databases = {}
+        self.last_token = None
+        self.db_combo.configure(values=[])
+        self.db_var.set("")
+        self.copy_button.configure(state="disabled")
+        self.status_var.set("")
+        self._sync_generate_state()
 
     def _show_token_popup(self, token: str) -> None:
         popup = tk.Toplevel(self.root)
