@@ -1,6 +1,18 @@
 RDS IAM Auth Token GUI — TODO
 =============================
 
+RESUME HERE (next session)
+--------------------------
+Code is complete and committed (git commit be219fa on branch main).
+Blair is fixing the py313 virtualenv (it had no activate script) and
+installing python3-tk, then restarting Claude. Pick up at step 6/8:
+
+  1. Confirm tkinter imports:  python -c "import tkinter"
+  2. Launch the app:           uv run rds-token-gui   (or python -m rds_token_gui.app)
+  3. Run the manual GUI test (step 8) with real ca-central-1 credentials.
+  4. When ready, add the GitHub remote and push (step 10).
+
+
 [x] 1. Initialize local git repo (git init; no remote yet)
 [x] 2. Create .gitignore (standard Python ignores)
 [x] 3. Create pyproject.toml (hatchling, boto3 dep, [project.gui-scripts]

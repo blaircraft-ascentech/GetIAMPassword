@@ -1,5 +1,27 @@
 # RDS IAM Auth Token GUI (Tkinter) — Work Plan
 
+## Status (2026-07-14)
+
+**Implementation complete and committed** — git commit `be219fa` on branch `main`,
+working tree clean. All source, packaging, and docs are in place:
+`pyproject.toml`, `README.md`, `.gitignore`, `src/rds_token_gui/{__init__,app}.py`.
+
+Verified on this box: `py_compile` clean; credential parser passes for
+bash/PowerShell/cmd formats + missing-variable detection; `pip install .` into a
+clean venv succeeds and the `rds-token-gui` entry point resolves to
+`rds_token_gui.app:main`.
+
+**Not yet done (needs a working env + display + real credentials):**
+1. `sudo apt install python3-tk` on the Linux box (needs interactive sudo).
+2. Fix the `py313` virtualenv — it has no activate script (`workon py313` failed).
+   Blair is fixing this before restarting Claude.
+3. Live GUI test (verification steps 3–6 below) with real ca-central-1 credentials.
+4. Add the GitHub remote and push (deferred by design).
+
+Note: the `py313` venv was built against a Python without Tk, so installing
+`python3-tk` may not expose tkinter to that specific venv — if it still can't
+import tkinter, use the system Python or a Tk-enabled build.
+
 ## Context
 
 A small cross-platform desktop helper for generating RDS IAM database auth tokens without hand-typing `aws rds generate-db-auth-token` commands. The workflow: paste temporary credentials copied from the AWS access portal, pick a region and an RDS endpoint discovered from the account, enter the IAM DB username, and get the token either on the clipboard or in a dialog.
