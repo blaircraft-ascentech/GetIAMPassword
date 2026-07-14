@@ -89,6 +89,7 @@ class RdsTokenApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
         self.databases: dict[str, tuple[str, int]] = {}
+        self.last_token: str | None = None
         self._busy = False
 
         root.title("RDS IAM Auth Token Generator")
@@ -167,6 +168,22 @@ class RdsTokenApp:
         self.status_var = tk.StringVar(value="")
         ttk.Label(frame, textvariable=self.status_var, foreground="#0a6").grid(
             row=row, column=0, columnspan=2, sticky="w", pady=(4, 0)
+        )
+        row += 1
+
+        # Bottom button row: copy the last token / close the app.
+        button_row = ttk.Frame(frame)
+        button_row.grid(row=row, column=0, columnspan=2, sticky="ew", pady=(12, 0))
+        button_row.columnconfigure(0, weight=1)
+        self.copy_button = ttk.Button(
+            button_row,
+            text="Copy to clipboard",
+            command=self.on_copy_to_clipboard,
+            state="disabled",
+        )
+        self.copy_button.grid(row=0, column=0, sticky="w")
+        ttk.Button(button_row, text="Close", command=self.root.destroy).grid(
+            row=0, column=1, sticky="e"
         )
 
     # -- helpers ---------------------------------------------------------
@@ -282,15 +299,29 @@ class RdsTokenApp:
             messagebox.showerror("Failed to generate token", _format_error(exc))
             return
 
+        self.last_token = token
+        self.copy_button.configure(state="normal")
+
         if self.clipboard_var.get():
-            self.root.clipboard_clear()
-            self.root.clipboard_append(token)
-            self.status_var.set(
-                "Token copied to clipboard (valid ~15 min). "
-                "Paste it before closing this window."
-            )
+            self._copy_token_to_clipboard(token)
         else:
             self._show_token_popup(token)
+
+    def _copy_token_to_clipboard(self, token: str) -> None:
+        self.root.clipboard_clear()
+        self.root.clipboard_append(token)
+        self.status_var.set(
+            "Token copied to clipboard (valid ~15 min). "
+            "Paste it before closing this window."
+        )
+
+    def on_copy_to_clipboard(self) -> None:
+        if not self.last_token:
+            messagebox.showerror(
+                "No token", "Generate a token first, then copy it."
+            )
+            return
+        self._copy_token_to_clipboard(self.last_token)
 
     def _show_token_popup(self, token: str) -> None:
         popup = tk.Toplevel(self.root)
