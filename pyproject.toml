@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rds-token-gui"
+version = "0.1.0"
+description = "Cross-platform Tkinter GUI to generate RDS IAM database auth tokens"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Blair Craft", email = "blair.craft@ascentech.ca" }]
+keywords = ["aws", "rds", "iam", "auth-token", "tkinter", "gui"]
+dependencies = [
+    "boto3>=1.26",
+]
+
+[project.gui-scripts]
+rds-token-gui = "rds_token_gui.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rds_token_gui"]

@@ -1,0 +1,31 @@
+RDS IAM Auth Token GUI — TODO
+=============================
+
+[x] 1. Initialize local git repo (git init; no remote yet)
+[x] 2. Create .gitignore (standard Python ignores)
+[x] 3. Create pyproject.toml (hatchling, boto3 dep, [project.gui-scripts]
+       entry point rds-token-gui = "rds_token_gui.app:main")
+[x] 4. Create README.md (install via uv/pip, usage, Linux python3-tk note)
+[x] 5. Implement src/rds_token_gui/__init__.py and app.py:
+       [x] Credential paste-box + parser (bash/PowerShell/cmd formats)
+       [x] Region combobox (default ca-central-1)
+       [x] DB username entry
+       [x] Clipboard checkbox (default checked)
+       [x] "Load databases" button -> boto3 describe_db_instances +
+           describe_db_clusters (paginated, threaded) -> dropdown
+       [x] "Generate token" button -> generate_db_auth_token
+       [x] Clipboard copy path + status label (15-min validity note)
+       [x] Token popup dialog path (selectable text)
+       [x] Error dialogs for missing creds / AWS errors
+[ ] 6. Install python3-tk on the Linux dev box (sudo apt install python3-tk)
+       -- needs interactive sudo; run manually
+[x] 7. Verify packaging: pip install . into scratch venv OK; entry point
+       rds-token-gui resolves to rds_token_gui.app:main; parser tested across
+       bash/PowerShell/cmd formats + missing-var detection
+[ ] 8. Manual GUI test with real access-portal credentials (ca-central-1)
+       -- needs python3-tk + display + real creds; run manually
+       [ ] Clipboard mode produces valid signed token
+       [ ] Popup mode shows selectable token
+       [ ] Negative tests: incomplete paste, expired creds
+[x] 9. Initial git commit ("Add RDS IAM auth token GUI")
+[ ] 10. Later: add GitHub remote and push
