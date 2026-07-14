@@ -3,14 +3,15 @@ RDS IAM Auth Token GUI — TODO
 
 RESUME HERE (next session)
 --------------------------
-Code is complete and committed (git commit be219fa on branch main).
-Blair is fixing the py313 virtualenv (it had no activate script) and
-installing python3-tk, then restarting Claude. Pick up at step 6/8:
+Code is complete, committed, and pushed to origin/main. python3-tk is
+installed and tkinter imports in the py313 venv (Tk 8.6); the package is
+pip-installed editable and the rds-token-gui entry point resolves.
 
-  1. Confirm tkinter imports:  python -c "import tkinter"
-  2. Launch the app:           uv run rds-token-gui   (or python -m rds_token_gui.app)
-  3. Run the manual GUI test (step 8) with real ca-central-1 credentials.
-  4. When ready, add the GitHub remote and push (step 10).
+Only step 8 remains — the live GUI test. It could NOT run in the Claude
+session because that box is a bare tty (no DISPLAY / Wayland / Xvfb).
+Run it on a desktop session with real ca-central-1 creds:
+
+  rds-token-gui        (or: uv run rds-token-gui)
 
 
 [x] 1. Initialize local git repo (git init; no remote yet)
@@ -29,8 +30,9 @@ installing python3-tk, then restarting Claude. Pick up at step 6/8:
        [x] Clipboard copy path + status label (15-min validity note)
        [x] Token popup dialog path (selectable text)
        [x] Error dialogs for missing creds / AWS errors
-[ ] 6. Install python3-tk on the Linux dev box (sudo apt install python3-tk)
-       -- needs interactive sudo; run manually
+[x] 6. Install python3-tk on the Linux dev box (sudo apt install python3-tk)
+       -- done; tkinter imports in py313 venv (Tk 8.6). NOTE: the PyPI "tk"
+       package is a useless placeholder -- the real dep is the OS python3-tk.
 [x] 7. Verify packaging: pip install . into scratch venv OK; entry point
        rds-token-gui resolves to rds_token_gui.app:main; parser tested across
        bash/PowerShell/cmd formats + missing-var detection
@@ -40,4 +42,4 @@ installing python3-tk, then restarting Claude. Pick up at step 6/8:
        [ ] Popup mode shows selectable token
        [ ] Negative tests: incomplete paste, expired creds
 [x] 9. Initial git commit ("Add RDS IAM auth token GUI")
-[ ] 10. Later: add GitHub remote and push
+[x] 10. GitHub remote added and pushed (origin/main).

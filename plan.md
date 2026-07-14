@@ -11,16 +11,18 @@ bash/PowerShell/cmd formats + missing-variable detection; `pip install .` into a
 clean venv succeeds and the `rds-token-gui` entry point resolves to
 `rds_token_gui.app:main`.
 
-**Not yet done (needs a working env + display + real credentials):**
-1. `sudo apt install python3-tk` on the Linux box (needs interactive sudo).
-2. Fix the `py313` virtualenv — it has no activate script (`workon py313` failed).
-   Blair is fixing this before restarting Claude.
-3. Live GUI test (verification steps 3–6 below) with real ca-central-1 credentials.
-4. Add the GitHub remote and push (deferred by design).
+**Done since:** `python3-tk` installed (tkinter imports, Tk 8.6); the `py313`
+venv works; the package is pip-installed editable and the `rds-token-gui`
+entry point resolves; GitHub remote added and pushed (`origin/main`).
 
-Note: the `py313` venv was built against a Python without Tk, so installing
-`python3-tk` may not expose tkinter to that specific venv — if it still can't
-import tkinter, use the system Python or a Tk-enabled build.
+**Not yet done (needs a display + real credentials):**
+1. Live GUI test (verification steps 3–6 below) with real ca-central-1
+   credentials. Could not run in the Claude session — that box is a bare tty
+   (no DISPLAY / Wayland / Xvfb). Run on a desktop: `rds-token-gui`.
+
+Note: the venv links to system Python (`/usr/bin/python3.13`), so the OS
+`python3-tk` package exposes tkinter to it. The PyPI `tk` package is a
+placeholder and does NOT provide tkinter — remove it if installed.
 
 ## Context
 
