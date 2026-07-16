@@ -1,6 +1,8 @@
 # rds-token-gui
-<img width="560" height="437" alt="image" src="https://github.com/user-attachments/assets/041656af-4b53-4fb4-bcf6-f2ed88687cc8" />
 
+<img width="562" height="439" alt="image" src="https://github.com/user-attachments/assets/653573fb-0141-4021-afef-c14d74d24823" />
+
+---
 
 A small cross-platform (Windows / macOS / Linux) Tkinter desktop app that
 generates **RDS IAM database authentication tokens** without hand-typing
