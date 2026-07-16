@@ -1,6 +1,11 @@
 # rds-token-gui
 
-<img width="562" height="439" alt="image" src="https://github.com/user-attachments/assets/653573fb-0141-4021-afef-c14d74d24823" />
+<img 
+  style=" display=block;
+          margin-left: auto;
+          margin-right: auto;"
+  width="562" height="439" alt="screenshot" src="media/rds-token-gui-screenshot.png" 
+/>
 
 ---
 
