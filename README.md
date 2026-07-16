@@ -3,7 +3,6 @@
   style=" display=block;
           margin-left: auto;
           margin-right: auto;
-          width: 75%"
   width="562" height="439" alt="screenshot" src="media/rds-token-gui-screenshot.png" 
 />
 
