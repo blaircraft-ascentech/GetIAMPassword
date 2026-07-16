@@ -1,4 +1,10 @@
 # rds-token-gui
+<img 
+  style=" display=block;
+          margin-left: auto;
+          margin-right: auto;"
+  width="562" height="439" alt="screenshot" src="media/rds-token-gui-screenshot.png" 
+/>
 
 <img 
   style=" display=block;
