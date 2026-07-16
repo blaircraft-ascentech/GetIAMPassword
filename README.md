@@ -1,5 +1,7 @@
 # rds-token-gui
-![Screenshot](media/rds-token-gui-screenshot.png)
+<p align="center">
+  <img src="media/rds-token-gui-screenshot.png" alt="screenshot" />
+</p>
 ---
 
 A small cross-platform (Windows / macOS / Linux) Tkinter desktop app that
